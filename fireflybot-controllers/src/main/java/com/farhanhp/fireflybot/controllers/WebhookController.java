@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 @RestController
-@RequestMapping("/webhook/telegram")
+@RequestMapping("/webhook")
 @AllArgsConstructor
-public class TelegramWebhookController {
+public class WebhookController {
 
   private static final String X_TELEGRAM_BOT_API_SECRET_TOKEN = "X-Telegram-Bot-Api-Secret-Token";
 
@@ -22,13 +22,15 @@ public class TelegramWebhookController {
 
   private ResponseHelper responseHelper;
 
-  @PostMapping("/findAnimeByImage")
-  public Mono<ControllerResponse<String>> findAnimeByImage(
+  @PostMapping("/telegram")
+  public Mono<ControllerResponse<String>> telegramWebhook(
       @RequestHeader(X_TELEGRAM_BOT_API_SECRET_TOKEN) String secretToken,
       @RequestBody Update update) {
 
     return commandExecutor.execute(FindAnimeByImageInTelegramCommand.class,
-        FindAnimeByImageInTelegramCommandRequest.builder().update(update).secretToken(secretToken)
-            .build()).map(responseHelper::createSuccessResponse).subscribeOn(Schedulers.parallel());
+            FindAnimeByImageInTelegramCommandRequest.builder().update(update).secretToken(secretToken)
+                .build()).map(responseHelper::createSuccessResponse)
+        // TODO: add error handling to give proper response
+        .onErrorComplete().subscribeOn(Schedulers.parallel());
   }
 }

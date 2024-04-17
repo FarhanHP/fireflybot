@@ -9,5 +9,7 @@ public interface ResponseHelper {
 
   <T> ControllerResponse<T> createSuccessResponse(T body);
 
+  ControllerResponse<?> createSuccessResponseFromThrowable(Throwable throwable);
+
   <T, U extends List<T>> ControllerListResponse<T> createSuccessResponse(U bodies);
 }

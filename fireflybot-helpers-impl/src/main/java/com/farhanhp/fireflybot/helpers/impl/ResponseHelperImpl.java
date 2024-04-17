@@ -21,6 +21,15 @@ public class ResponseHelperImpl implements ResponseHelper {
   }
 
   @Override
+  public ControllerResponse<?> createSuccessResponseFromThrowable(Throwable throwable) {
+    return ControllerResponse.builder()
+        .code(HttpStatus.OK.value())
+        .message(HttpStatus.OK.toString())
+        .error(throwable.getMessage())
+        .build();
+  }
+
+  @Override
   public <T, U extends List<T>> ControllerListResponse<T> createSuccessResponse(U bodies) {
     return ControllerListResponse.<T>builder()
         .code(HttpStatus.OK.value())
