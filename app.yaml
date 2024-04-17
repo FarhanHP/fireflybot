@@ -1,0 +1,2 @@
+runtime: java21
+entrypoint: java -Xmx64m -jar fireflybot-app/target/fireflybot-app-0.0.1-SNAPSHOT.jar
