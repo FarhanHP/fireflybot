@@ -30,7 +30,7 @@ public class WebhookController {
     return commandExecutor.execute(FindAnimeByImageInTelegramCommand.class,
             FindAnimeByImageInTelegramCommandRequest.builder().update(update).secretToken(secretToken)
                 .build()).map(responseHelper::createSuccessResponse)
-        // TODO: add error handling to give proper response
-        .onErrorComplete().subscribeOn(Schedulers.parallel());
+        .onErrorResume(error -> Mono.just(responseHelper.createSuccessResponseFromThrowable(error)))
+        .subscribeOn(Schedulers.parallel());
   }
 }

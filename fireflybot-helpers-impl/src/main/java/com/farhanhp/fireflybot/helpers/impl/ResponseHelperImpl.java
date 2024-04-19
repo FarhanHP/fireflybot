@@ -15,17 +15,17 @@ public class ResponseHelperImpl implements ResponseHelper {
   public <T> ControllerResponse<T> createSuccessResponse(T body) {
     return ControllerResponse.<T>builder()
         .code(HttpStatus.OK.value())
-        .message(HttpStatus.OK.toString())
+        .message(HttpStatus.OK.getReasonPhrase())
         .body(body)
         .build();
   }
 
   @Override
-  public ControllerResponse<?> createSuccessResponseFromThrowable(Throwable throwable) {
-    return ControllerResponse.builder()
+  public <T> ControllerResponse<T> createSuccessResponseFromThrowable(Throwable throwable) {
+    return ControllerResponse.<T>builder()
         .code(HttpStatus.OK.value())
-        .message(HttpStatus.OK.toString())
-        .error(throwable.getMessage())
+        .message(throwable.getMessage())
+        .error(throwable.toString())
         .build();
   }
 
